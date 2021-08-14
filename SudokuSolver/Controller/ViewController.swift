@@ -31,6 +31,24 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 fatalError("Could not convert to CIImage!")
             }
             
+            let arr: [[Int]] = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                   [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                   [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                   [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                   [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                   [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                   [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                   [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                   [0, 0, 0, 0, 0, 0, 0, 0, 0]]
+            
+            let (newArr, solved) = solveSudoku(arr: arr)
+            if solved {
+                print(newArr)
+            }
+            else {
+                print("Could not solve")
+            }
+            
             //detect(image: ciimage)
             
         }
