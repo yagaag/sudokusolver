@@ -12,6 +12,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     let imagePicker = UIImagePickerController()
     var result: [[Int]] = [[0]]
     
+    @IBOutlet weak var imgDisplay: UIImageView!
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -54,14 +56,17 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             guard let ciimage = CIImage(image: userPickedImage) else {
                 fatalError("Could not convert to CIImage!")
             }
-            solve()
+            let newImg = detect(image: ciimage)
+            // solve()
+            imgDisplay.image = newImg
             
             //detect(image: ciimage)
             
         }
         
         imagePicker.dismiss(animated: true) {
-            self.performSegue(withIdentifier: "presentResult", sender: self)}
+            //self.performSegue(withIdentifier: "presentResult", sender: self)
+        }
     }
     
     @IBAction func cameraPressed(_ sender: UIButton) {

@@ -39,6 +39,10 @@
                                     <action selector="cameraPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xu9-Zq-zh4"/>
                                 </connections>
                             </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bXP-l8-cIl">
+                                <rect key="frame" x="87" y="484" width="240" height="240"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemIndigoColor"/>
@@ -53,12 +57,13 @@
                     </view>
                     <navigationItem key="navigationItem" title="Sudoku Solver" id="8vx-9k-gNu"/>
                     <connections>
+                        <outlet property="imgDisplay" destination="bXP-l8-cIl" id="Hrz-sX-kTv"/>
                         <segue destination="mgV-K4-9He" kind="presentation" identifier="presentResult" id="hFe-K8-2Xe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1141" y="115"/>
+            <point key="canvasLocation" x="1140.5797101449277" y="114.50892857142857"/>
         </scene>
         <!--Result View Controller-->
         <scene sceneID="9sl-J7-g2B">
