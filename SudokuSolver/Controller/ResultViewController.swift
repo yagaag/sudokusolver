@@ -10,13 +10,17 @@ import UIKit
 class ResultViewController: UIViewController {
     
     var result: [[Int]]?
-    @IBOutlet weak var text: UITextView!
-    @IBOutlet weak var k1: UILabel!
+    
+    @IBOutlet var collectionOfLabels:[UILabel]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        k1.layer.borderColor = UIColor.darkGray.cgColor
-        k1.layer.borderWidth = 3.0
+        
+        for i in 0..<81 {
+            collectionOfLabels?[i].layer.borderColor = UIColor.systemIndigo.cgColor
+            collectionOfLabels?[i].layer.borderWidth = 2.0
+        }
+
     }
     
 }
