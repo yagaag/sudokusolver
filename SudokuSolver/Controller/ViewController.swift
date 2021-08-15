@@ -53,11 +53,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         if let userPickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             
-            guard let ciimage = CIImage(image: userPickedImage) else {
+            guard let cgimage = userPickedImage.cgImage else {
                 fatalError("Could not convert to CIImage!")
             }
-            let newImg = detect(image: ciimage)
-            // solve()
+            var rotate: Bool = true
+            if Int(userPickedImage.size.height) == cgimage.height {
+                rotate = false
+            }
+            let newImg = detect(image: cgimage, imgView: imgDisplay, rotate: rotate)
             imgDisplay.image = newImg
             
             //detect(image: ciimage)
