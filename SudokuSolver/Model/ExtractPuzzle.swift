@@ -22,7 +22,7 @@ func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
     return scaledImage
 }
 
-func detect(image: CGImage, imgView: UIImageView, rotate: Bool) -> UIImage {
+func extractBoundary(image: CGImage, imgView: UIImageView, rotate: Bool) -> UIImage {
     
     var topLeft = CGPoint(x: 0.0, y: 0.0)
     var topRight = CGPoint(x: 0.0, y: 0.0)
@@ -37,16 +37,18 @@ func detect(image: CGImage, imgView: UIImageView, rotate: Bool) -> UIImage {
             fatalError("Request Failed!")
         }
         print(results)
+        if results.count > 0 {
         topLeft = results[0].topLeft
         topRight = results[0].topRight
         bottomLeft = results[0].bottomLeft
         bottomRight = results[0].bottomRight
         print(topLeft, topRight, bottomLeft, bottomRight)
+        }
 
     }
     // Customize & configure the request to detect only certain rectangles.
     rectDetectRequest.maximumObservations = 8 // Vision currently supports up to 16.
-    rectDetectRequest.minimumConfidence = 0.6 // Be confident.
+    rectDetectRequest.minimumConfidence = 0.4 // Be confident.
     rectDetectRequest.minimumAspectRatio = 0.3 // height / width
     
     rectDetectRequest.usesCPUOnly = false //allow Vision to utilize the GPU
@@ -88,5 +90,66 @@ func detect(image: CGImage, imgView: UIImageView, rotate: Bool) -> UIImage {
         let cgImage = sizedImage.cgImage!
         return UIImage(cgImage: cgImage, scale: sizedImage.scale, orientation: .right)
     }
+    
     return sizedImage
+}
+
+func extractCells(image: UIImage, rotate: Bool) -> UIImage {
+    
+    var newImage = image
+    let rect = CGRect(x: -450.0+10.0, y: 0.0+10.0, width: 97.0, height: 97.0)
+    
+    return newImage.croppedInRect(rect: rect)
+}
+
+func extractText(image: CGImage) {
+    
+    print("Text...")
+    
+    // #1: ID Rectangle
+    // Create a request handler
+    let imageRequestHandler = VNImageRequestHandler(cgImage: image)
+    let textDetectRequest = VNDetectTextRectanglesRequest { request, error in
+        guard let results = request.results as? [VNRectangleObservation] else {
+            fatalError("Request Failed!")
+        }
+        print(results)
+        print(results.count)
+
+    }
+    
+    textDetectRequest.usesCPUOnly = false //allow Vision to utilize the GPU
+    
+    do {
+        try imageRequestHandler.perform([textDetectRequest])
+    } catch {
+        print("Error: Rectangle detection failed - vision request failed.")
+    }
+    
+}
+
+extension UIImage {
+    func croppedInRect(rect: CGRect) -> UIImage {
+        func rad(_ degree: Double) -> CGFloat {
+            return CGFloat(degree / 180.0 * .pi)
+        }
+
+        var rectTransform: CGAffineTransform
+        print(imageOrientation.rawValue)
+        switch imageOrientation {
+        case .left:
+            rectTransform = CGAffineTransform(rotationAngle: rad(90)).translatedBy(x: 0, y: -self.size.height)
+        case .right:
+            rectTransform = CGAffineTransform(rotationAngle: rad(-90)).translatedBy(x: -self.size.width, y: 0)
+        case .down:
+            rectTransform = CGAffineTransform(rotationAngle: rad(-180)).translatedBy(x: -self.size.width, y: -self.size.height)
+        default:
+            rectTransform = .identity
+        }
+        rectTransform = rectTransform.scaledBy(x: self.scale, y: self.scale)
+
+        let imageRef = self.cgImage!.cropping(to: rect.applying(rectTransform))
+        let result = UIImage(cgImage: imageRef!, scale: self.scale, orientation: self.imageOrientation)
+        return result
+    }
 }
