@@ -9,6 +9,7 @@ import UIKit
 import Vision
 import CoreImage
 import CoreImage.CIFilterBuiltins
+import CoreML
 
 func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
     
@@ -94,12 +95,31 @@ func extractBoundary(image: CGImage, imgView: UIImageView, rotate: Bool) -> UIIm
     return sizedImage
 }
 
-func extractCells(image: UIImage, rotate: Bool) -> UIImage {
+func extractCells(image: UIImage, rotate: Bool) -> [CGImage] {
     
-    var newImage = image
-    let rect = CGRect(x: -450.0+10.0, y: 0.0+10.0, width: 97.0, height: 97.0)
-    
-    return newImage.croppedInRect(rect: rect)
+    let newImage = image
+    var cells =  [CGImage]()
+    var x: Double = 0.0
+    var y: Double = 0.0
+    var tric_x: Double = 0.0
+    var tric_y: Double = 0.0
+    for i in 0..<9 {
+        if i==3 || i==6 {
+            tric_x += 3.0
+        }
+        for j in 0..<9 {
+            if j==3 || j==6 {
+                tric_y += 3.0
+            }
+            x = -450.0+11.0+(Double(i)*97.0)+tric_x
+            y = 0.0+11.0+(Double(j)*97.0)+tric_y
+            let rect = CGRect(x: x, y: y, width: 94.0, height: 94.0)
+            cells.append(newImage.croppedInRect(rect: rect).cgImage!)
+        }
+    }
+//    let rect = CGRect(x: -450.0+11.0, y: 0.0+11.0+97.0, width: 94.0, height: 94.0)
+//    return newImage.croppedInRect(rect: rect)
+    return cells
 }
 
 func extractText(image: CGImage) {
@@ -123,7 +143,7 @@ func extractText(image: CGImage) {
     do {
         try imageRequestHandler.perform([textDetectRequest])
     } catch {
-        print("Error: Rectangle detection failed - vision request failed.")
+        print("Error: Text detection failed - vision request failed.")
     }
     
 }
@@ -135,7 +155,6 @@ extension UIImage {
         }
 
         var rectTransform: CGAffineTransform
-        print(imageOrientation.rawValue)
         switch imageOrientation {
         case .left:
             rectTransform = CGAffineTransform(rotationAngle: rad(90)).translatedBy(x: 0, y: -self.size.height)
@@ -149,7 +168,68 @@ extension UIImage {
         rectTransform = rectTransform.scaledBy(x: self.scale, y: self.scale)
 
         let imageRef = self.cgImage!.cropping(to: rect.applying(rectTransform))
+//        return imageRef!
         let result = UIImage(cgImage: imageRef!, scale: self.scale, orientation: self.imageOrientation)
         return result
     }
+    func rotate(radians: Float) -> UIImage? {
+        var newSize = CGRect(origin: CGPoint.zero, size: self.size).applying(CGAffineTransform(rotationAngle: CGFloat(radians))).size
+        // Trim off the extremely small float value to prevent core graphics from rounding it up
+        newSize.width = floor(newSize.width)
+        newSize.height = floor(newSize.height)
+
+        UIGraphicsBeginImageContextWithOptions(newSize, false, self.scale)
+        let context = UIGraphicsGetCurrentContext()!
+
+        // Move origin to middle
+        context.translateBy(x: newSize.width/2, y: newSize.height/2)
+        // Rotate around middle
+        context.rotate(by: CGFloat(radians))
+        // Draw the image at its center
+        self.draw(in: CGRect(x: -self.size.width/2, y: -self.size.height/2, width: self.size.width, height: self.size.height))
+
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        return newImage
+    }
+}
+
+func detect(image: CGImage) {
+        
+    guard let model = try? VNCoreMLModel(for: MNISTClassifier().model) else {
+        fatalError("Maybe loading CoreML Model failed")
+    }
+    
+    let request = VNCoreMLRequest(model: model) { (request, error) in
+        guard let results = request.results as? [VNClassificationObservation] else {
+            fatalError("Classification Failed!")
+        }
+        
+        print(results)
+    }
+    let handler = VNImageRequestHandler(cgImage: image)
+    
+    do {
+        try handler.perform([request])
+    }
+    catch {
+        print(error)
+    }
+}
+
+func extractPuzzle(image: CGImage, imgView: UIImageView, rotate: Bool) -> UIImage {
+    
+    let croppedImage = extractBoundary(image: image, imgView: imgView, rotate: rotate)
+    let cells = extractCells(image: croppedImage, rotate: rotate)
+    for i in 0..<81 {
+        let rotimg = UIImage(cgImage: cells[i]).rotate(radians: 1.5708)!
+        let newimg = rotimg.cgImage!
+        detect(image: newimg)
+//        if i == 6 {
+//            return UIImage(cgImage: newimg)
+//        }
+    }
+    return croppedImage
+//    extractText(image: cells[6])
 }

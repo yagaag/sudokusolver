@@ -60,9 +60,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             if Int(userPickedImage.size.height) == cgimage.height {
                 rotate = false
             }
-            let newImg = extractBoundary(image: cgimage, imgView: imgDisplay, rotate: rotate)
-            let newerImg = extractCells(image: newImg, rotate: rotate)
-            imgDisplay.image = newerImg
+            let newImg = extractPuzzle(image: cgimage, imgView: imgDisplay, rotate: rotate)
+//            let newImg = extractBoundary(image: cgimage, imgView: imgDisplay, rotate: rotate)
+//            let newerImg = extractCells(image: newImg, rotate: rotate)
+            imgDisplay.image = newImg
             
             //detect(image: ciimage)
             
