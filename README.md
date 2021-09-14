@@ -12,11 +12,11 @@ iOS 11.0+
 
 ## Usage
 
-### Step #1: Take an image of the puzzle you wish to solve
+Step #1: Take an image of the puzzle you wish to solve
 
-### Step #2: Click on 'Use photo'
+Step #2: Click on 'Use photo'
 
-### Step #3: The solved puzzle will be displayed. If there is no solution, you will be informed.
+Step #3: The solved puzzle will be displayed. If there is no solution, you will be informed.
 
 ## Working
 

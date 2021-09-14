@@ -11,6 +11,58 @@ import CoreImage
 import CoreImage.CIFilterBuiltins
 import CoreML
 
+func cropImage(image: UIImage, withinPoints points:[CGPoint], rotate: Bool) -> UIImage {
+
+    let ofImageView = UIImageView(image: image)
+
+    //Check if there is start and end points exists
+    let path = UIBezierPath()
+    let shapeLayer = CAShapeLayer()
+    shapeLayer.fillColor = UIColor.clear.cgColor
+    shapeLayer.lineWidth = 2
+    var croppedImage: UIImage = image
+
+    for (index,point) in points.enumerated() {
+
+        //Origin
+        if index == 0 {
+            path.move(to: point)
+
+        //Endpoint
+        } else if index == points.count-1 {
+            path.addLine(to: point)
+            path.close()
+            shapeLayer.path = path.cgPath
+
+            ofImageView.layer.addSublayer(shapeLayer)
+            shapeLayer.fillColor = UIColor.black.cgColor
+            ofImageView.layer.mask = shapeLayer
+            UIGraphicsBeginImageContextWithOptions(ofImageView.frame.size, false, 1)
+
+            if let currentContext = UIGraphicsGetCurrentContext() {
+                ofImageView.layer.render(in: currentContext)
+            }
+
+            let newImage = UIGraphicsGetImageFromCurrentImageContext()
+
+            UIGraphicsEndImageContext()
+
+            croppedImage = newImage!
+
+            //Move points
+        } else {
+            path.addLine(to: point)
+        }
+    }
+
+    if rotate {
+        print("rotating")
+        let cgImage = croppedImage.cgImage!
+        return UIImage(cgImage: cgImage, scale: croppedImage.scale, orientation: .right)
+    }
+    return croppedImage
+}
+
 func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
     
     let rect = CGRect(x: 0, y: 0, width: targetSize.width, height: targetSize.height)
@@ -60,13 +112,16 @@ func extractBoundary(image: CGImage, rotate: Bool) -> UIImage {
     
     // #2: Change perspective
     topLeft.x = CGFloat(image.width) * topLeft.x
-    topLeft.y = CGFloat(image.height) * topLeft.y
+    topLeft.y = CGFloat(image.height) * (topLeft.y)
     topRight.x = CGFloat(image.width) * topRight.x
-    topRight.y = CGFloat(image.height) * topRight.y
+    topRight.y = CGFloat(image.height) * (topRight.y)
     bottomLeft.x = CGFloat(image.width) * bottomLeft.x
-    bottomLeft.y = CGFloat(image.height) * bottomLeft.y
+    bottomLeft.y = CGFloat(image.height) * (bottomLeft.y)
     bottomRight.x = CGFloat(image.width) * bottomRight.x
-    bottomRight.y = CGFloat(image.height) * bottomRight.y
+    bottomRight.y = CGFloat(image.height) * (bottomRight.y)
+    
+//    let coords = [topLeft, topRight, bottomRight, bottomLeft]
+//    return cropImage(image: UIImage(cgImage: image), withinPoints: coords, rotate: rotate)
     
     let perspectiveCorrection = CIFilter.perspectiveCorrection()
     perspectiveCorrection.inputImage = CIImage(cgImage: image)
@@ -191,6 +246,5 @@ func extractPuzzle(image: CGImage, rotate: Bool) -> [[Int]] {
         }
         puzzle[i%9][i/9] = val
     }
-    print(puzzle)
     return puzzle
 }

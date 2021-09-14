@@ -49,7 +49,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                                [0, 0, 0, 0, 0, 0, 0, 0, 0]]
         
         imagePicker.dismiss(animated: true) {
-            //self.performSegue(withIdentifier: "presentResult", sender: self)
         }
         
         if let userPickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
