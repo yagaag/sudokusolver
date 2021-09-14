@@ -12,7 +12,7 @@ iOS 11.0+
 
 ## Usage
 
-![readme_1](https://github.com/yagaag/sudokusolver/blob/main/images/readme_1.png)
+![readme_1](https://github.com/yagaag/sudokusolver/blob/main/images/readme_01.png)
 
 Step #1: Take an image of the puzzle you wish to solve
 
