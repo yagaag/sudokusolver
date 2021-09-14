@@ -16,15 +16,23 @@ iOS 11.0+
 
 Step #1: Take an image of the puzzle you wish to solve
 
+![readme_1](https://github.com/yagaag/sudokusolver/blob/main/images/readme_02.png)
+
 Step #2: Click on 'Use photo'
 
+![readme_1](https://github.com/yagaag/sudokusolver/blob/main/images/readme_03.png)
+
 Step #3: The solved puzzle will be displayed. If there is no solution, you will be informed.
+
+![readme_1](https://github.com/yagaag/sudokusolver/blob/main/images/readme_04.png)
 
 ## Working
 
 ### 1. Rectangle Detection
 
 The outer rectangle of the puzzle is extracted using the Vision API's VNDetectRectanglesRequest.
+
+![readme_1](https://github.com/yagaag/sudokusolver/blob/main/images/readme_05.png)
 
 ```swift
 import Vision
@@ -58,6 +66,8 @@ do {
 
 The extracted rectangle's perspective is corrected using the CIFilter - perspectiveCorrection().
 
+![readme_1](https://github.com/yagaag/sudokusolver/blob/main/images/readme_06.png)
+
 ```swift
 import CoreImage
 import CoreImage.CIFilterBuiltins
@@ -76,6 +86,8 @@ let correctedImage = perspectiveCorrection.outputImage!
 ### 3. Extracting Cells
 
 Individual cells are seperated from the resized, corrected rectangle based on coordinates.
+
+![readme_1](https://github.com/yagaag/sudokusolver/blob/main/images/readme_07.png)
 
 ### 4. Digit Recognition
 
