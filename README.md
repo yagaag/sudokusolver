@@ -1,6 +1,6 @@
 # Sudoku Solver
 
-An iOS application for solving the sudoku puzzle from an image.
+An iOS application that extracts and solves sudoku puzzles from images.
 
 ## Version 
 
@@ -25,6 +25,10 @@ Step #2: Click on 'Use photo'
 Step #3: The solved puzzle will be displayed. If there is no solution, you will be informed.
 
 ![solved_puzzle](https://github.com/yagaag/sudokusolver/blob/main/images/solved_puzzle.png)
+
+## Demo
+
+Here is a demo video of the application -> ![Demo](https://youtu.be/5tjhwkz-fkw)
 
 ## Working
 
