@@ -12,19 +12,19 @@ iOS 11.0+
 
 ## Usage
 
-![readme_1](https://github.com/yagaag/sudokusolver/blob/main/images/readme_01.png)
+![home](https://github.com/yagaag/sudokusolver/blob/main/images/home.png)
 
 Step #1: Take an image of the puzzle you wish to solve
 
-![readme_1](https://github.com/yagaag/sudokusolver/blob/main/images/readme_02.png)
+![take_photo](https://github.com/yagaag/sudokusolver/blob/main/images/take_photo.png)
 
 Step #2: Click on 'Use photo'
 
-![readme_1](https://github.com/yagaag/sudokusolver/blob/main/images/readme_03.png)
+![use_photo](https://github.com/yagaag/sudokusolver/blob/main/images/use_photo.png)
 
 Step #3: The solved puzzle will be displayed. If there is no solution, you will be informed.
 
-![readme_1](https://github.com/yagaag/sudokusolver/blob/main/images/readme_04.png)
+![solved_puzzle](https://github.com/yagaag/sudokusolver/blob/main/images/solved_puzzle.png)
 
 ## Working
 
@@ -32,7 +32,7 @@ Step #3: The solved puzzle will be displayed. If there is no solution, you will 
 
 The outer rectangle of the puzzle is extracted using the Vision API's VNDetectRectanglesRequest.
 
-![readme_1](https://github.com/yagaag/sudokusolver/blob/main/images/readme_05.png)
+![rectangle_detection](https://github.com/yagaag/sudokusolver/blob/main/images/rectangle_detection.png)
 
 ```swift
 import Vision
@@ -66,7 +66,7 @@ do {
 
 The extracted rectangle's perspective is corrected using the CIFilter - perspectiveCorrection().
 
-![readme_1](https://github.com/yagaag/sudokusolver/blob/main/images/readme_06.png)
+![perspective_correction](https://github.com/yagaag/sudokusolver/blob/main/images/perspective_correction.png)
 
 ```swift
 import CoreImage
@@ -87,7 +87,7 @@ let correctedImage = perspectiveCorrection.outputImage!
 
 Individual cells are seperated from the resized, corrected rectangle based on coordinates.
 
-![readme_1](https://github.com/yagaag/sudokusolver/blob/main/images/readme_07.png)
+![cell_extraction](https://github.com/yagaag/sudokusolver/blob/main/images/cell_extraction.png)
 
 ### 4. Digit Recognition
 
