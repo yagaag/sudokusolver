@@ -37,13 +37,11 @@ func extractBoundary(image: CGImage, rotate: Bool) -> UIImage {
         guard let results = request.results as? [VNRectangleObservation] else {
             fatalError("Request Failed!")
         }
-        print(results)
         if results.count > 0 {
-        topLeft = results[0].topLeft
-        topRight = results[0].topRight
-        bottomLeft = results[0].bottomLeft
-        bottomRight = results[0].bottomRight
-        print(topLeft, topRight, bottomLeft, bottomRight)
+            topLeft = results[0].topLeft
+            topRight = results[0].topRight
+            bottomLeft = results[0].bottomLeft
+            bottomRight = results[0].bottomRight
         }
 
     }
