@@ -12,6 +12,8 @@ iOS 11.0+
 
 ## Usage
 
+![readme_1](https://github.com/yagaag/sudokusolver/blob/main/images/readme_1.png)
+
 Step #1: Take an image of the puzzle you wish to solve
 
 Step #2: Click on 'Use photo'
