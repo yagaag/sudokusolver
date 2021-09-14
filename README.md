@@ -2,15 +2,15 @@
 
 An iOS application that extracts and solves sudoku puzzles from images.
 
-### Version 
+## Version 
 
 1.0.0
 
-### Availability
+## Availability
 
 iOS 11.0+
 
-### Demo
+## Demo
 
 [Click here to view demo](https://youtu.be/5tjhwkz-fkw)
 
