@@ -10,6 +10,10 @@ An iOS application that extracts and solves sudoku puzzles from images.
 
 iOS 11.0+
 
+## Demo
+
+Here is a demo video of the application -> [Demo](https://youtu.be/5tjhwkz-fkw)
+
 ## Usage
 
 ![home](https://github.com/yagaag/sudokusolver/blob/main/images/home.png)
@@ -25,10 +29,6 @@ Step #2: Click on 'Use photo'
 Step #3: The solved puzzle will be displayed. If there is no solution, you will be informed.
 
 ![solved_puzzle](https://github.com/yagaag/sudokusolver/blob/main/images/solved_puzzle.png)
-
-## Demo
-
-Here is a demo video of the application -> [Demo](https://youtu.be/5tjhwkz-fkw)
 
 ## Working
 
