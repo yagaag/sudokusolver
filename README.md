@@ -28,7 +28,7 @@ Step #3: The solved puzzle will be displayed. If there is no solution, you will 
 
 ## Demo
 
-Here is a demo video of the application -> [![Demo](https://img.youtube.com/vi/5tjhwkz-fkw/maxresdefault.jpg)](https://youtu.be/5tjhwkz-fkw)
+Here is a demo video of the application -> [Demo](https://youtu.be/5tjhwkz-fkw)
 
 ## Working
 
