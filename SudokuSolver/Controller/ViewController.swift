@@ -26,8 +26,21 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
     }
     
-    func solve() {
-        let arr: [[Int]] = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
+    func solve(arr: [[Int]]) {
+        
+        let (newArr, solved) = solveSudoku(arr: arr)
+        if solved {
+            result = newArr
+            self.performSegue(withIdentifier: "presentResult", sender: self)
+        }
+        else {
+            print("Could not solve the puzzle")
+        }
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        var puzzle: [[Int]] = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
                                [0, 0, 0, 0, 0, 0, 0, 0, 0],
                                [0, 0, 0, 0, 0, 0, 0, 0, 0],
                                [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -37,19 +50,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                                [0, 0, 0, 0, 0, 0, 0, 0, 0],
                                [0, 0, 0, 0, 0, 0, 0, 0, 0]]
         
-        
-        let (newArr, solved) = solveSudoku(arr: arr)
-        if solved {
-            print(newArr)
-            result = newArr
-//            self.performSegue(withIdentifier: "presentResult", sender: self)
+        imagePicker.dismiss(animated: true) {
+            //self.performSegue(withIdentifier: "presentResult", sender: self)
         }
-        else {
-            print("Could not solve")
-        }
-    }
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         if let userPickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             
@@ -60,18 +63,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             if Int(userPickedImage.size.height) == cgimage.height {
                 rotate = false
             }
-            let newImg = extractPuzzle(image: cgimage, imgView: imgDisplay, rotate: rotate)
-//            let newImg = extractBoundary(image: cgimage, imgView: imgDisplay, rotate: rotate)
-//            let newerImg = extractCells(image: newImg, rotate: rotate)
-            imgDisplay.image = newImg
-            
-            //detect(image: ciimage)
-            
+            puzzle = extractPuzzle(image: cgimage, imgView: imgDisplay, rotate: rotate)
         }
         
-        imagePicker.dismiss(animated: true) {
-            //self.performSegue(withIdentifier: "presentResult", sender: self)
-        }
+        solve(arr: puzzle)
     }
     
     @IBAction func cameraPressed(_ sender: UIButton) {

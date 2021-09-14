@@ -10,7 +10,8 @@
 		623957A626C7D00900497D33 /* Sudoku.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623957A526C7D00900497D33 /* Sudoku.swift */; };
 		623957A826C7D79600497D33 /* ExtractPuzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623957A726C7D79600497D33 /* ExtractPuzzle.swift */; };
 		623957AA26C7D89000497D33 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623957A926C7D89000497D33 /* ResultViewController.swift */; };
-		62A8AF4126EB75E1008DDAA9 /* MNISTClassifier.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 62A8AF4026EB75E1008DDAA9 /* MNISTClassifier.mlmodel */; };
+		626B252526F0AE80002F0162 /* DigitRecogniser.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 626B252426F0AE80002F0162 /* DigitRecogniser.mlmodel */; };
+		626B252726F0AF3E002F0162 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626B252626F0AF3E002F0162 /* Extensions.swift */; };
 		62CD5E4B26C7807100D29BD3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62CD5E4A26C7807100D29BD3 /* AppDelegate.swift */; };
 		62CD5E4D26C7807100D29BD3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62CD5E4C26C7807100D29BD3 /* SceneDelegate.swift */; };
 		62CD5E4F26C7807100D29BD3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62CD5E4E26C7807100D29BD3 /* ViewController.swift */; };
@@ -24,7 +25,8 @@
 		623957A526C7D00900497D33 /* Sudoku.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sudoku.swift; sourceTree = "<group>"; };
 		623957A726C7D79600497D33 /* ExtractPuzzle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractPuzzle.swift; sourceTree = "<group>"; };
 		623957A926C7D89000497D33 /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
-		62A8AF4026EB75E1008DDAA9 /* MNISTClassifier.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = MNISTClassifier.mlmodel; sourceTree = "<group>"; };
+		626B252426F0AE80002F0162 /* DigitRecogniser.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = DigitRecogniser.mlmodel; sourceTree = "<group>"; };
+		626B252626F0AF3E002F0162 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		62CD5E4726C7807100D29BD3 /* SudokuSolver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SudokuSolver.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		62CD5E4A26C7807100D29BD3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		62CD5E4C26C7807100D29BD3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -60,9 +62,10 @@
 		623957A326C7CFB900497D33 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				62A8AF4026EB75E1008DDAA9 /* MNISTClassifier.mlmodel */,
+				626B252426F0AE80002F0162 /* DigitRecogniser.mlmodel */,
 				623957A526C7D00900497D33 /* Sudoku.swift */,
 				623957A726C7D79600497D33 /* ExtractPuzzle.swift */,
+				626B252626F0AF3E002F0162 /* Extensions.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -180,10 +183,11 @@
 				623957A826C7D79600497D33 /* ExtractPuzzle.swift in Sources */,
 				623957AA26C7D89000497D33 /* ResultViewController.swift in Sources */,
 				62CD5E4B26C7807100D29BD3 /* AppDelegate.swift in Sources */,
+				626B252526F0AE80002F0162 /* DigitRecogniser.mlmodel in Sources */,
+				626B252726F0AF3E002F0162 /* Extensions.swift in Sources */,
 				62CD5E4D26C7807100D29BD3 /* SceneDelegate.swift in Sources */,
 				62CD5E5526C7807100D29BD3 /* SudokuSolver.xcdatamodeld in Sources */,
 				623957A626C7D00900497D33 /* Sudoku.swift in Sources */,
-				62A8AF4126EB75E1008DDAA9 /* MNISTClassifier.mlmodel in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -56,15 +56,6 @@ func checkLocationSafety(arr: [[Int]], row: Int, col: Int, num: Int) -> Bool {
 
 func solveSudoku(arr: [[Int]]) -> ([[Int]], Bool) {
     
-//    var newArr: [[Int]] = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
-//                           [0, 0, 0, 0, 0, 0, 0, 0, 0],
-//                           [0, 0, 0, 0, 0, 0, 0, 0, 0],
-//                           [0, 0, 0, 0, 0, 0, 0, 0, 0],
-//                           [0, 0, 0, 0, 0, 0, 0, 0, 0],
-//                           [0, 0, 0, 0, 0, 0, 0, 0, 0],
-//                           [0, 0, 0, 0, 0, 0, 0, 0, 0],
-//                           [0, 0, 0, 0, 0, 0, 0, 0, 0],
-//                           [0, 0, 0, 0, 0, 0, 0, 0, 0]]
     var newArr = arr
     
     let (l, locationAvailable) = findEmptyLocation(arr: newArr, l: [0, 0])

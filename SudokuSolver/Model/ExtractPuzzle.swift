@@ -62,13 +62,13 @@ func extractBoundary(image: CGImage, imgView: UIImageView, rotate: Bool) -> UIIm
     
     // #2: Change perspective
     topLeft.x = CGFloat(image.width) * topLeft.x
-    topLeft.y = CGFloat(image.height) * (topLeft.y)
+    topLeft.y = CGFloat(image.height) * topLeft.y
     topRight.x = CGFloat(image.width) * topRight.x
-    topRight.y = CGFloat(image.height) * (topRight.y)
+    topRight.y = CGFloat(image.height) * topRight.y
     bottomLeft.x = CGFloat(image.width) * bottomLeft.x
-    bottomLeft.y = CGFloat(image.height) * (bottomLeft.y)
+    bottomLeft.y = CGFloat(image.height) * bottomLeft.y
     bottomRight.x = CGFloat(image.width) * bottomRight.x
-    bottomRight.y = CGFloat(image.height) * (bottomRight.y)
+    bottomRight.y = CGFloat(image.height) * bottomRight.y
     
     let perspectiveCorrection = CIFilter.perspectiveCorrection()
     perspectiveCorrection.inputImage = CIImage(cgImage: image)
@@ -117,119 +117,82 @@ func extractCells(image: UIImage, rotate: Bool) -> [CGImage] {
             cells.append(newImage.croppedInRect(rect: rect).cgImage!)
         }
     }
-//    let rect = CGRect(x: -450.0+11.0, y: 0.0+11.0+97.0, width: 94.0, height: 94.0)
-//    return newImage.croppedInRect(rect: rect)
     return cells
 }
 
-func extractText(image: CGImage) {
-    
-    print("Text...")
-    
-    // #1: ID Rectangle
-    // Create a request handler
-    let imageRequestHandler = VNImageRequestHandler(cgImage: image)
-    let textDetectRequest = VNDetectTextRectanglesRequest { request, error in
-        guard let results = request.results as? [VNRectangleObservation] else {
-            fatalError("Request Failed!")
+func convertToMLMultiArray(image: UIImage) -> MLMultiArray? {
+    let userSketch = try? MLMultiArray(shape:[1, NSNumber(value: 28), NSNumber(value: 28), 1], dataType:.double)
+    for i in 0..<28 {
+        for j in 0..<28 {
+            var color = image.getPixelColor(pos: CGPoint(x: i, y: 28-j))
+            if color >= 128.0 && color < 235.0 {
+                color = color+20.0
+            }
+            else if color >= 235.0 {
+                color = 255.0
+            }
+            else if color < 128.0 && color >= 20.0 {
+                color = color-20.0
+            }
+            else {
+                color = 0.0
+            }
+            print(i, j, color)
+            userSketch?[[0, i, j, 0] as [NSNumber]] = NSNumber(floatLiteral: Double(color/255.0))
         }
-        print(results)
-        print(results.count)
-
     }
-    
-    textDetectRequest.usesCPUOnly = false //allow Vision to utilize the GPU
-    
-    do {
-        try imageRequestHandler.perform([textDetectRequest])
-    } catch {
-        print("Error: Text detection failed - vision request failed.")
-    }
-    
+    return userSketch!
 }
 
-extension UIImage {
-    func croppedInRect(rect: CGRect) -> UIImage {
-        func rad(_ degree: Double) -> CGFloat {
-            return CGFloat(degree / 180.0 * .pi)
-        }
-
-        var rectTransform: CGAffineTransform
-        switch imageOrientation {
-        case .left:
-            rectTransform = CGAffineTransform(rotationAngle: rad(90)).translatedBy(x: 0, y: -self.size.height)
-        case .right:
-            rectTransform = CGAffineTransform(rotationAngle: rad(-90)).translatedBy(x: -self.size.width, y: 0)
-        case .down:
-            rectTransform = CGAffineTransform(rotationAngle: rad(-180)).translatedBy(x: -self.size.width, y: -self.size.height)
-        default:
-            rectTransform = .identity
-        }
-        rectTransform = rectTransform.scaledBy(x: self.scale, y: self.scale)
-
-        let imageRef = self.cgImage!.cropping(to: rect.applying(rectTransform))
-//        return imageRef!
-        let result = UIImage(cgImage: imageRef!, scale: self.scale, orientation: self.imageOrientation)
-        return result
-    }
-    func rotate(radians: Float) -> UIImage? {
-        var newSize = CGRect(origin: CGPoint.zero, size: self.size).applying(CGAffineTransform(rotationAngle: CGFloat(radians))).size
-        // Trim off the extremely small float value to prevent core graphics from rounding it up
-        newSize.width = floor(newSize.width)
-        newSize.height = floor(newSize.height)
-
-        UIGraphicsBeginImageContextWithOptions(newSize, false, self.scale)
-        let context = UIGraphicsGetCurrentContext()!
-
-        // Move origin to middle
-        context.translateBy(x: newSize.width/2, y: newSize.height/2)
-        // Rotate around middle
-        context.rotate(by: CGFloat(radians))
-        // Draw the image at its center
-        self.draw(in: CGRect(x: -self.size.width/2, y: -self.size.height/2, width: self.size.width, height: self.size.height))
-
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-
-        return newImage
-    }
-}
-
-func detect(image: CGImage) {
+func detect(arr: MLMultiArray) -> Int {
+    
+    var prediction = [Double]()
         
-    guard let model = try? VNCoreMLModel(for: MNISTClassifier().model) else {
-        fatalError("Maybe loading CoreML Model failed")
+    guard let model = try? DigitRecogniser()
+    else {
+        return 10
     }
     
-    let request = VNCoreMLRequest(model: model) { (request, error) in
-        guard let results = request.results as? [VNClassificationObservation] else {
-            fatalError("Classification Failed!")
+    let input = DigitRecogniserInput(conv2d_1_input: arr)
+    
+    if let modelOutput = try? model.prediction(input: input) {
+        for index in 0..<11 {
+            prediction.append(modelOutput.Identity[index].doubleValue)
         }
-        
-        print(results)
     }
-    let handler = VNImageRequestHandler(cgImage: image)
-    
-    do {
-        try handler.perform([request])
+    else {
+        return 10
     }
-    catch {
-        print(error)
-    }
+    let predID = Int(prediction.firstIndex(of: prediction.max() ?? prediction[9]) ?? 10)
+    return predID
 }
 
-func extractPuzzle(image: CGImage, imgView: UIImageView, rotate: Bool) -> UIImage {
+func extractPuzzle(image: CGImage, imgView: UIImageView, rotate: Bool) -> [[Int]] {
     
     let croppedImage = extractBoundary(image: image, imgView: imgView, rotate: rotate)
     let cells = extractCells(image: croppedImage, rotate: rotate)
+    
+    var puzzle: [[Int]] = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
+                           [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                           [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                           [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                           [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                           [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                           [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                           [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                           [0, 0, 0, 0, 0, 0, 0, 0, 0]]
+    
     for i in 0..<81 {
-        let rotimg = UIImage(cgImage: cells[i]).rotate(radians: 1.5708)!
-        let newimg = rotimg.cgImage!
-        detect(image: newimg)
-//        if i == 6 {
-//            return UIImage(cgImage: newimg)
-//        }
+        var img = UIImage(cgImage: cells[i]).rotate(radians: 1.5708)!
+        img = img.noir!
+        img = resizeImage(image: img, targetSize: CGSize(width: 28, height: 28))
+        let arr = convertToMLMultiArray(image: img)
+        var val = detect(arr: arr!)
+        if val == 10 {
+            val = 0
+        }
+        puzzle[i%9][i/9] = val
     }
-    return croppedImage
-//    extractText(image: cells[6])
+    print(puzzle)
+    return puzzle
 }
