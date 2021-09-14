@@ -23,7 +23,7 @@ func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
     return scaledImage
 }
 
-func extractBoundary(image: CGImage, imgView: UIImageView, rotate: Bool) -> UIImage {
+func extractBoundary(image: CGImage, rotate: Bool) -> UIImage {
     
     var topLeft = CGPoint(x: 0.0, y: 0.0)
     var topRight = CGPoint(x: 0.0, y: 0.0)
@@ -167,9 +167,9 @@ func detect(arr: MLMultiArray) -> Int {
     return predID
 }
 
-func extractPuzzle(image: CGImage, imgView: UIImageView, rotate: Bool) -> [[Int]] {
+func extractPuzzle(image: CGImage, rotate: Bool) -> [[Int]] {
     
-    let croppedImage = extractBoundary(image: image, imgView: imgView, rotate: rotate)
+    let croppedImage = extractBoundary(image: image, rotate: rotate)
     let cells = extractCells(image: croppedImage, rotate: rotate)
     
     var puzzle: [[Int]] = [[0, 0, 0, 0, 0, 0, 0, 0, 0],

@@ -11,9 +11,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     let imagePicker = UIImagePickerController()
     var result: [[Int]] = [[0]]
-    
-    @IBOutlet weak var imgDisplay: UIImageView!
-    
+
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -63,7 +61,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             if Int(userPickedImage.size.height) == cgimage.height {
                 rotate = false
             }
-            puzzle = extractPuzzle(image: cgimage, imgView: imgDisplay, rotate: rotate)
+            puzzle = extractPuzzle(image: cgimage, rotate: rotate)
         }
         
         solve(arr: puzzle)
@@ -90,4 +88,3 @@ extension ViewController {
         }
     }
 }
-
