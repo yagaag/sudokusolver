@@ -83,7 +83,7 @@ let context = CIContext(options: nil)
 let correctedImage = perspectiveCorrection.outputImage!
 ```
 
-### 3. Extracting Cells
+### 3. Cells Extraction
 
 Individual cells are seperated from the resized, corrected rectangle based on coordinates.
 
@@ -119,7 +119,7 @@ return predID
 
 ### 5. Solving the puzzle
 
-After the digits are populated into an array, a back tracking algorithm is used to find the solution to the puzzle.
+After the digits are populated into an array, a backtracking algorithm is used to find the solution to the puzzle.
 
 ## Author
 
